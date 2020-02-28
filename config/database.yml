@@ -15,7 +15,7 @@
 # gem 'pg'
 #
 default: &default
-  adapter: sqlite3
+  adapter: postgresql
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
   ##adapter: postgresql
@@ -26,7 +26,7 @@ default: &default
 
 development:
   <<: *default
-  database: db/development.sqlite3
+  database: db/development.postgresql
   #database: active_storage_with_previews_example_development
 
   # The specified database role being used to connect to postgres.
