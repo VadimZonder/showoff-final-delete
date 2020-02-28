@@ -5,6 +5,9 @@ Rails.application.routes.draw do
   root 'welcome#index'
   resources :widgets
 
+  post '/' => "welcome#index"#, as: "root"
+
+
 
 
   # The priority is based upon order of creation: first created -> highest priority.

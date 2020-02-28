@@ -15,7 +15,7 @@
 # gem 'pg'
 #
 default: &default
-  adapter: postgresql
+  adapter: sqlite3
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
   ##adapter: postgresql
@@ -26,7 +26,7 @@ default: &default
 
 development:
   <<: *default
-  database: db/development.postgresql
+  database: db/development.sqlite3
   #database: active_storage_with_previews_example_development
 
   # The specified database role being used to connect to postgres.
@@ -83,7 +83,13 @@ test:
 #     url: <%##= ENV['DATABASE_URL'] %>
 #
 production:
-  <<: *default
+  ##<<: *default
+  adapter: postgresql
+  encoding: unicode
+  host: localhost
+  # For details on connection pooling, see rails configuration guide
+  # http://guides.rubyonrails.org/configuring.html#database-pooling
+  pool: 5
   #database: active_storage_with_previews_example_production
   ##username: active_storage_with_previews_example
   ##password: <%##= ENV['ACTIVE_STORAGE_WITH_PREVIEWS_EXAMPLE_DATABASE_PASSWORD'] %>

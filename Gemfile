@@ -10,7 +10,7 @@ gem 'rails', '~> 5.2.0'
 ##gem 'pg', '>= 0.18', '< 2.0'
 # # Use sqlite3 as the database for Active Record
 ##gem 'sqlite3', '~> 1.3.6'
-##gem 'sqlite3', '~> 1.3.13'
+gem 'sqlite3', '~> 1.3.13'
 # Use Puma as the app server
 gem 'pg'
 gem 'puma', '~> 3.11'
@@ -73,8 +73,10 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
-#running on a local server with rubymine
+#development
+###gem 'wdm', '~> 0.1.0'
+
+#FOR HEROKU
 platforms :mswin do
   gem "wdm", :group => [:development]
 end
-

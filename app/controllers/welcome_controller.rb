@@ -1,4 +1,5 @@
 class WelcomeController < ApplicationController
+  protect_from_forgery prepend: true
  # GET /welcome
   def index
     ##Development or Deployment____________
