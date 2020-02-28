@@ -74,5 +74,7 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 #running on a local server with rubymine
-gem 'wdm', '~> 0.1.0'
+platforms :mswin do
+  gem "wdm", :group => [:development]
+end
 
