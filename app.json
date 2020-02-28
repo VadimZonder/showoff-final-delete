@@ -1,0 +1,20 @@
+{
+  "name": "Showoff Example App",
+  "description": "A simple app that serves as UI for Widget APIs",
+  "image": "heroku/ruby",
+  "repository": "https://github.com/VadimZonder/showoff",
+  "keywords": ["ruby", "rails" ],
+  "addons": [
+    "heroku-postgresql",
+    "bucketeer:hobbyist"
+  ],
+  "buildpacks": [
+    {
+      "url": "https://github.com/VadimZonder/showoffw"
+    },
+    {
+      "url": "heroku/ruby"
+    }
+  ]
+
+}

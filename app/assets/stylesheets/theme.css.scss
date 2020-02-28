@@ -1,0 +1,56 @@
+$brand-primary: #532F8C;
+$brand-language: #B01302;
+$brand-print: #DC0032;
+
+.jumbotron {
+  background: $brand-primary;
+  color: white;
+  padding-bottom: 10px;
+  background-color: #FC3100;
+
+  .btn-primary {
+    background: lighten($brand-primary, 20%);
+    border-color: lighten($brand-primary, 20%);
+    &:hover {
+      background: lighten($brand-primary, 15%);
+    }
+  }
+  
+    .btn-print {
+    background: lighten($brand-print, 20%);
+    border-color: lighten($brand-print, 20%);
+    &:hover {
+      background: lighten($brand-print, 95%);
+    }
+  }
+ 
+
+  p {
+    //color: lighten($brand-primary, 50%);
+    color: black;
+    max-width: 75%;
+    margin: 1em auto 2em;
+  }
+
+  .navbar + & {
+    margin-top: -20px;
+  }
+
+  .lang-logo {
+    display: block;
+    background: $brand-language;
+    background-color: white;
+    border-radius: 50%;
+    overflow: hidden;
+    width: 150px;
+    height: 150px;
+    margin: auto;
+    border: 2px solid white;
+    img {
+      max-width: 90%;
+       margin-top: 45px;
+    }
+  }
+
+}
+
