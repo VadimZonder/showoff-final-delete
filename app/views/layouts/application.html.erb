@@ -47,14 +47,17 @@
           //initial values
           var passwordLogin = document.getElementById("passwordLogin").value;
           var emailLogin = document.getElementById("emailLogin").value;
-          var loginUrl = "https://showoff-rails-react-production.herokuapp.com/oauth/token"
-
-          if(passwordLogin == ""){
+          //if values are empty then use the values from registration
+          //ON LOGIN ADD ERROR MESSAGES FOR EMPTY VALUES
+          if(!passwordLogin){
+              var password = document.getElementById("password").value;
               passwordLogin = password;
           }
-          if(emailLogin == ""){
+          if(!emailLogin){
+              var email = document.getElementById("email").value;
               emailLogin = email;
           }
+          var loginUrl = "https://showoff-rails-react-production.herokuapp.com/oauth/token"
 
           //AJAX call
           $.ajax({
@@ -76,6 +79,7 @@
                   document.cookie = "emailReset="+emailLogin+";";
                   console.log(data.data.token.access_token);
 
+
                   //redirect to home page - window.location is used for cross browser safety
                   //also by refreshing it will update ruby varaible with the access token  
                   window.location.href = "/";
@@ -85,6 +89,7 @@
                   console.log("Error");
                   console.log(err.responseJSON.message);
                   //alert("login error message ="+err.responseJSON.message);
+
               }
           });
       }
@@ -98,9 +103,8 @@
           var lName = document.getElementById("lName").value;
           var password = document.getElementById("password").value;
           var email = document.getElementById("email").value;
-
           //XMLHttpRequest
-          function call(){
+          function call() {
               var url = "https://showoff-rails-react-production.herokuapp.com/api/v1/users";
               var xhr = new XMLHttpRequest();
               xhr.open("POST", url, true);
@@ -116,25 +120,45 @@
                       //can be made to accept an image
                       image_url: "https://static.thenounproject.com/png/961-200.png"
                   }
+
               }));
 
               xhr.onreadystatechange = function () {
+                  var response = xhr.responseText;
+                  //catching only successful registrations
                   if (xhr.readyState === 4) {
-                      var response = xhr.responseText;
-                      var obj = JSON.stringify(response); //JSON.parse(response);
-                      console.log(obj);
-                      alert("Registered! Now Login Pease.");
-                      // document.cookie = "loggedin=Success;";
-                      //If Ihad a bit more time I would just call the login mwthod within the registration and passed the necessary params for sucessfull login
-                      //login();
-                      //window.location.href = "/";
+                      if (xhr.status === 200) {
+                          if (response != undefined) {
+                              var correctRegistrationResponce = JSON.parse(response);
+                              //making suitable format for the alert message
+                              correctRegistrationResponce = correctRegistrationResponce.message;
+                              correctRegistrationResponce = JSON.stringify(correctRegistrationResponce);
+                              console.log("success == ", correctRegistrationResponce);
+                              alert("Registered! Now Login Please.");
+                              //ADD LOGIN HERE
+                              // document.cookie = "loggedin=Success;";
+                              //If Ihad a bit more time I would just call the login mwthod within the registration and passed the necessary params for sucessfull login
+                              window.location.href = "/";
+                              //checking if registration values were passed successfully
 
+                              login();
+                              window.location.href = "/";
+                          }
+                      }
+                      else {
+                          //catching error messages from registration API
+                          if (response != undefined) {
+                              var incorrectRegistrationResponce = JSON.parse(response);
+                              //making suitable format for the alert message
+                              incorrectRegistrationResponce = incorrectRegistrationResponce.message;
+                              incorrectRegistrationResponce = JSON.stringify(incorrectRegistrationResponce);
+                              console.log("Warning from registration API = ", incorrectRegistrationResponce);
+                              alert("Warning from registration API = " + incorrectRegistrationResponce);
+                              //display message on the HTML page
 
+                          }
+                      }
                   }
-                  if (obj != undefined){
-                      var registerResponce =obj.message;
-                  }
-                  // alert(registerResponce);  
               }
           }
           call();
@@ -201,22 +225,35 @@
               beforeSend: function(xhr) {
                   xhr.setRequestHeader("Content-Type","application/json")
               }, success: function(data){
-                  alert(data.message);
-                  //alert("lggedin? ="+data.data.message);
-                  console.log(data);
-                  document.cookie = "loggedin=error";
-                  window.location.href = "/";
+                  if (data != undefined) {
+                      alert(data.message);
+                      //alert("lggedin? ="+data.data.message);
+                      console.log(data);
+                      document.cookie = "loggedin=error";
+                      window.location.href = "/";
+                  }
+                  else{
+                      alert("data was undefined "+data.message);
+                  }
+
 
               },
               error: function(err) {
+                  //var passwordResetError = JSON.parse(data);
+                  //making suitable format for the alert message
+                  //passwordResetError = passwordResetError;
+                  var passwordResetError = JSON.stringify(err);
+                  console.log("passwordResetError == ", passwordResetError);
+                  alert("error"+passwordResetError)
                   console.log("Error");
-                  console.log(err.responseJSON.message);
+                  //console.log(err.responseJSON.message);
                   //alert("password reset error message ="+err.responseJSON.message);
                   document.cookie = "loggedin=error";
                   window.location.href = "/";
               }
 
           });
+
       }
 
   </script>
@@ -245,7 +282,7 @@
             class="close" title="Close Modal">&times;</span>
 
           <!-- Modal Content -->
-          <form class="modal-content animate" method="post" action="./">
+          <form class="modal-content animate"  method="post" action="./">
             <div class="imgcontainer">
             </div>
 
@@ -370,12 +407,15 @@
                   var displayLoginBtn = document.getElementById("btn-login");
                   var displayLogoutBtn = document.getElementById("btn-logout");
                   var displayPasswordResetBtn = document.getElementById("btn-passwordReset");
+                  console.log('lin = '+loggedin);
                   //x.style.display = "none";
                   if (loggedin == "Success") {
                       displayRegisterBtn.style.display = "none";
                       displayLogoutBtn.style.display = "block";
                       displayPasswordResetBtn.style.display = "block";
                       displayLoginBtn.style.display = "none";
+                      console.log('yeees');
+
                   }
 
                   else {
@@ -383,6 +423,9 @@
                       displayPasswordResetBtn.style.display = "none";
                       displayLogoutBtn.style.display = "none";
                       displayLoginBtn.style.display = "block";
+                      console.log('nooo');
+
+
                   }
               }
               dispalyLoginOrOut();

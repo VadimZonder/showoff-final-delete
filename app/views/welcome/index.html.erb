@@ -1,6 +1,107 @@
 <!-- Your Vidgets ----------------------------------------------------------------- -->
 <%= link_to "My Widgets", widgets_path, :class => " btn-white btn btn-primary"%>
 
+<!--delete
+
+-->
+<script>
+    //var fname = document.getElementById('fname').value;
+    //alert("fname = "+fname);
+</script>
+<td><%#= @searchTerm%></td>
+
+<br>
+<!--Create New WIDGETS ----------------------------------------------------------------------------------------------------------------->
+<script>
+    //create Widgets JS---------------------------------------------------------------------------------------------
+    function searchVisibleWidget() {
+        //initial values
+        var client_id ="277ef29692f9a70d511415dc60592daf4cf2c6f6552d3e1b769924b2f2e2e6fe";
+        var client_secret ="d6106f26e8ff5b749a606a1fba557f44eb3dca8f48596847770beb9b643ea352";
+        var searchTerm = document.getElementById("searchTerm").value;
+        var visibleWidgetWithSearchTermtUrl = 'https://showoff-rails-react-production.herokuapp.com/api/v1/users/1/widgets?client_id='+
+            client_id+
+            '&client_secret='+client_secret+
+            '&term='+searchTerm
+
+        //AJAX call
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: visibleWidgetWithSearchTermtUrl ,
+            data: {},
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader("Authorization", authorization, "Content-Type","application/json")
+            }, success: function(data){
+                if (data != undefined && JSON.stringify(data.data.widgets[0])) {
+                    //var correctSearchResponce = JSON.parse(data);
+                    //making suitable format for the alert message
+                    //correctSearchResponce = correctSearchResponce.message;
+
+                    correctSearchResponce = JSON.stringify(data.data.widgets[0]);
+                    var correctSearchResponceID = JSON.stringify(data.data.widgets[0].id);
+                    var correctSearchResponceName = JSON.stringify(data.data.widgets[0].name);
+                    var correctSearchResponceDescription = JSON.stringify(data.data.widgets[0].description);
+                    var correctSearchResponceKind = JSON.stringify(data.data.widgets[0].kind);
+                    var correctSearchResponceUsername = JSON.stringify(data.data.widgets[0].user.name);
+
+                    console.log('here' + correctSearchResponce);
+                    responceMessage = document.getElementById('output').innerHTML = "<span style='color: lime; font-size:18px; padding: 25px 25px 25px 25px;'>Here is the visible widget name - " +
+                        correctSearchResponceName + "and it's creator is - " + correctSearchResponceUsername+ "." + "</span>";
+
+                    alert("ID = " +correctSearchResponceID+" Widget Name =  "+correctSearchResponceName+
+                        "\nWidget Description = "+correctSearchResponceDescription+
+                        "\nWidget Privacy = "+correctSearchResponceKind+
+                        "\nWidget User Name = "+correctSearchResponceUsername);
+                }
+                else{
+                    responceMessage = document.getElementById('output').innerHTML = "<span style='color: red; font-size:18px; padding: 25px 25px 25px 25px;'>No matches for the search results"+"</span>";
+                    console.log('no results found though the API call was successful= '+data)
+                    alert('No results found = '+JSON.stringify(data));
+                }
+            },
+            error: function(err) {
+               responceMessage = document.getElementById('output').innerHTML = "<span style='color: red; font-size:18px; padding: 25px 25px 25px 25px;'>Failure to search visible widgets - "+
+                    err.responseJSON.message+".."+"</span>";
+                console.log("Error");
+                console.log(err.responseJSON.message);
+                alert(err.responseJSON.message)
+            }
+
+        });
+
+
+        setTimeout(function(){
+            //reloading in order to update
+            location.reload();
+        }, 5000);
+
+    }
+
+</script>
+
+
+<!--Search visible widgets with a term---------------------------------------------------------->
+<br>
+<form class="form" onsubmit="return false;">
+  <div class="form-group">
+    <label for="exampleInputEmail1">Search Term</label>
+    <input type="text" class="form-control" id="searchTerm" aria-describedby="nameHelp" placeholder="Enter Your Widget Name">
+  </div>
+  <button type="submit" onclick="searchVisibleWidget();" class="btn btn-primary">Search</button>
+</form>
+<br>
+<br>
+<!-- OUTPUT Panel--------------------------->
+<div class = "panel panel-primary">
+  <div class = "panel-heading">
+    <h3 class = "panel-title" >Responce Message</h3>
+  </div>
+  <div style="padding: 10px 10px 10px 10px;">
+    <span id="output" style="white-space:nowrap;" ></span>
+  </div>
+</div>
+
 <br><br>
 <h3>All Widgets</h3>
 <table class="table table-hover">
@@ -16,7 +117,7 @@
     </tr>
   </thead>
   <tbody>
-    <% @nameResulsArray.each_slice(7) do |id ,widgetId, widgetName, widgetDescription,  kind,  name, image| %>
+    <% @nameResultsArray.each_slice(7) do |id ,widgetId, widgetName, widgetDescription,  kind,  name, image| %>
     <%# @descriptionResulsArray.each do |widgetDescription| %>
     <%# @fNameResulsArray.each do |fName| %>
     <%# @lNameResulsArray.each do |lName| %>
@@ -75,9 +176,9 @@
               
               
                 var outputModal =  document.getElementById('outputModal').innerHTML = '';
-                outputModal = document.getElementById('outputModal').innerHTML = "<span font-size:28px; padding: 25px 25px 25px 25px;'>This user has "+
-                displayWidgetsLength+" widgets. "+"</span><br><span font-size:28px; padding: 25px 25px 25px 25px;'>Widget Name: "+
-                (widgetNameArray.toString())+" widgets. "+"</span><br><span font-size:28px; padding: 25px 25px 25px 25px;'>Widget Description: "+
+                outputModal = document.getElementById('outputModal').innerHTML = "<span font-size:18px; padding: 25px 25px 25px 25px;'>This user has "+
+                displayWidgetsLength+" widgets. "+"</span><br><span font-size:18px; padding: 25px 25px 25px 25px;'>Widget Name: "+
+                (widgetNameArray.toString())+" widgets. "+"</span><br><span font-size:18px; padding: 25px 25px 25px 25px;'>Widget Description: "+
                 (widgetDescriptionArray.toString())+" ."+"</span>";
                 document.getElementById('id08').style.display='block';
               

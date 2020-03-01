@@ -30,21 +30,20 @@ class WelcomeController < ApplicationController
 
  
 ###All Visible Widets______________________________________________________________________________
-
-
+    @searchTerm = ""
 @urlSerachTermVisible ='https://showoff-rails-react-production.herokuapp.com/api/v1/users/1/widgets?
-client_id='+@client_id+'&client_secret='+@client_secret+'&term=visible'
+client_id='+@client_id+'&client_secret='+@client_secret+'&term='+@searchTerm
 
 @urlAllWidgetsVisible ='https://showoff-rails-react-production.herokuapp.com/api/v1/widgets/visible?
-client_id='+@client_id+'&client_secret='+@client_secret+'&term=visible'
+client_id='+@client_id+'&client_secret='+@client_secret
 
   @allWidgetsResponceSample = RestClient.get(@urlAllWidgetsVisible,
   {
   content_type: 'application/json',
     authorization: @authorization
   }
-) 
-        
+)
+
 
 
 
@@ -53,22 +52,22 @@ client_id='+@client_id+'&client_secret='+@client_secret+'&term=visible'
    ### @jsonParse = JSON.parse @res
    @objectCounter =1
     @jsonParseAllWidgets = JSON.parse (@allWidgetsResponceSample) ##change to the actual json string
-   # @nameResulsArray = @jsonParseAllWidgets["data"]["widgets"][0]["name"]
+   # @nameResultsArray = @jsonParseAllWidgets["data"]["widgets"][0]["name"]
    arrayCount = @jsonParseAllWidgets["data"]["widgets"].count-1
-  #@nameResulsArray = @jsonParseAllWidgets["data"]["widgets"][1]["name"]
-  @nameResulsArray = []
+  #@nameResultsArray = @jsonParseAllWidgets["data"]["widgets"][1]["name"]
+  @nameResultsArray = []
   @descriptionResulsArray = []
   @fNameResulsArray = []
   @lNameResulsArray = []
    while arrayCount != -1 do
-        @nameResulsArray =  @nameResulsArray.push(@jsonParseAllWidgets["data"]["widgets"][arrayCount-1]["user"]["id"])
-       @nameResulsArray = @nameResulsArray.push(@jsonParseAllWidgets["data"]["widgets"][arrayCount-1]["id"])
-       @nameResulsArray =  @nameResulsArray.push(@jsonParseAllWidgets["data"]["widgets"][arrayCount-1]["name"])
-       @nameResulsArray = @nameResulsArray.push(@jsonParseAllWidgets["data"]["widgets"][arrayCount-1]["description"])
-       @nameResulsArray =  @nameResulsArray.push(@jsonParseAllWidgets["data"]["widgets"][arrayCount-1]["kind"])
+        @nameResultsArray =  @nameResultsArray.push(@jsonParseAllWidgets["data"]["widgets"][arrayCount-1]["user"]["id"])
+       @nameResultsArray = @nameResultsArray.push(@jsonParseAllWidgets["data"]["widgets"][arrayCount-1]["id"])
+       @nameResultsArray =  @nameResultsArray.push(@jsonParseAllWidgets["data"]["widgets"][arrayCount-1]["name"])
+       @nameResultsArray = @nameResultsArray.push(@jsonParseAllWidgets["data"]["widgets"][arrayCount-1]["description"])
+       @nameResultsArray =  @nameResultsArray.push(@jsonParseAllWidgets["data"]["widgets"][arrayCount-1]["kind"])
 
-       @nameResulsArray =  @nameResulsArray.push(@jsonParseAllWidgets["data"]["widgets"][arrayCount-1]["user"]["name"])
-       @nameResulsArray =  @nameResulsArray.push(@jsonParseAllWidgets["data"]["widgets"][arrayCount-1]["user"]["images"]["small_url"])
+       @nameResultsArray =  @nameResultsArray.push(@jsonParseAllWidgets["data"]["widgets"][arrayCount-1]["user"]["name"])
+       @nameResultsArray =  @nameResultsArray.push(@jsonParseAllWidgets["data"]["widgets"][arrayCount-1]["user"]["images"]["small_url"])
 =begin
        @descriptionResulsArray = @descriptionResulsArray.push(@jsonParseAllWidgets["data"]["widgets"][arrayCount-1]["description"])
        @fNameResulsArray =  @fNameResulsArray.push(@jsonParseAllWidgets["data"]["widgets"][arrayCount-1]["user"]["first_name"])

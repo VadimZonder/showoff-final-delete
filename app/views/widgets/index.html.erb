@@ -14,7 +14,7 @@
     </tr>
   </thead>
   <tbody>
-    <% @nameResulsArray.each_slice(5) do |id, widgetName, widgetDescription, kind, image| %>
+    <% @nameResultsArray.each_slice(5) do |id, widgetName, widgetDescription, kind, image| %>
     <%# @descriptionResulsArray.each do |widgetDescription| %>
     <%# @fNameResulsArray.each do |fName| %>
     <%# @lNameResulsArray.each do |lName| %>
@@ -47,8 +47,8 @@ function createWidget() {
   var privateWidget = document.getElementById('privateWidget').checked;
   var widgetPrivacy;
   var privateWidgetUrl = "https://showoff-rails-react-production.herokuapp.com/api/v1/widgets";
-  
-  //indicating if the widget creatin is private or public
+
+  //indicating if the widget creating is private or public
    if(privateWidget === false){
       widgetPrivacy = "visible";
    }
@@ -74,23 +74,23 @@ function createWidget() {
       beforeSend: function(xhr) {
           xhr.setRequestHeader("Authorization", authorization, "Content-Type","application/json")
       }, success: function(data){
-            responceMessage = document.getElementById('output').innerHTML = "<span style='color: lime; font-size:28px; padding: 25px 25px 25px 25px;'>Congratulations you've created a widget. "+
+            responceMessage = document.getElementById('output').innerHTML = "<span style='color: lime; font-size:18px; padding: 25px 25px 25px 25px;'>Congratulations you've created a widget. "+
             data.data.widget.name+"'s id is " +data.data.widget.id+"."+"</span>";
             console.log(data);
       },
       error: function(err) {
-          responceMessage = document.getElementById('output').innerHTML = "<span style='color: red; font-size:28px; padding: 25px 25px 25px 25px;'>Failure to create a widget due to the following error - "+
-          err.responseJSON.message+"."+"</span>"; 
+          responceMessage = document.getElementById('output').innerHTML = "<span style='color: red; font-size:18px; padding: 25px 25px 25px 25px;'>Failure to create a widget due to the following error - "+
+          err.responseJSON.message+"."+"</span>";
           console.log("Error");
           console.log(err.responseJSON.message);
       }
-   
+
   });
- 
+
   setTimeout(function(){
     //reloading in order to update
     location.reload();
-  }, 5000); 
+  }, 5000);
 
 }
 
@@ -101,11 +101,11 @@ function createWidget() {
 <form class="form" onsubmit="return false;">
   <div class="form-group">
     <label for="exampleInputEmail1">Widget Name</label>
-    <input type="text" class="form-control" id="name" aria-describedby="nameHelp" placeholder="Enter Your Widget Name">
+    <input type="text" class="form-control" id="name" aria-describedby="nameHelp" placeholder="Enter Your Widget Name" required>
   </div>
   <div class="form-group">
     <label for="exampleInputPassword1">Description</label>
-    <input type="text" class="form-control" id="description" placeholder="Description">
+    <input type="text" class="form-control" id="description" placeholder="Description" required>
     <small id="nameHelp" class="form-text text-muted">Make it short and sweet.</small>
   </div>
   <!--add option for both visible and private-->
@@ -123,6 +123,7 @@ function createWidget() {
 </span>
 </div>
 
+<!-- OUTPUT PAnnel-->
 <div class = "panel panel-primary">
    <div class = "panel-heading">
       <h3 class = "panel-title" >Responce Message</h3>
@@ -194,12 +195,12 @@ function createOrDeleteWidget() {
       beforeSend: function(xhr) {
           xhr.setRequestHeader("Authorization", authorization, "Content-Type","application/json")
       }, success: function(data){
-            document.getElementById('output').innerHTML = "<span style='color: lime; font-size:28px; padding: 25px 25px 25px 25px;'>Congratulations you're action to "
+            document.getElementById('output').innerHTML = "<span style='color: lime; font-size:18px; padding: 25px 25px 25px 25px;'>Congratulations you're action to "
             +action+" was "+data.message+"full."+"</span>";
             console.log(data);
       },
       error: function(err) {
-          document.getElementById('output').innerHTML = "<span style='color: red; font-size:28px; padding: 25px 25px 25px 25px;'>Failure to modify- "+
+          document.getElementById('output').innerHTML = "<span style='color: red; font-size:18px; padding: 25px 25px 25px 25px;'>Failure to modify- "+
           err.responseJSON.message+"."+"</span>"; 
           console.log("Error");
           console.log(err.responseJSON.message);
@@ -216,16 +217,16 @@ function createOrDeleteWidget() {
 <!--Create Private Widget HTML-- onSubmit="if(!confirm('Is the form filled out correctly?')){return false;}" -------------------------------------------------------->
 <form class="form" onSubmit="if(!confirm('Is the form filled out correctly?')){return false;}">
   <div class="form-group">
-    <label for="exampleInputId1">Widget Name</label>
-    <input type="text" class="form-control" id="id" aria-describedby="nidHelp" placeholder="Enter The ID of the Widget">
+    <label for="exampleInputId1">Widget ID</label>
+    <input type="text" class="form-control" id="id" aria-describedby="nidHelp" placeholder="Enter The ID of the Widget" required>
   </div>    
   <div class="form-group">
     <label for="exampleInputEmail1">Widget Name</label>
-    <input type="text" class="form-control" id="nameUpdate" aria-describedby="nameHelp" placeholder="Enter Your Widget Name">
+    <input type="text" class="form-control" id="nameUpdate" aria-describedby="nameHelp" placeholder="Enter Your Widget Name" required>
   </div>
   <div class="form-group">
     <label for="exampleInputPassword1">Description</label>
-    <input type="text" class="form-control" id="descriptionUpdate" placeholder="Description">
+    <input type="text" class="form-control" id="descriptionUpdate" placeholder="Description" required>
     <small id="nameHelp" class="form-text text-muted">Make it short and sweet.</small>
   </div>
   <!--add option for both visible and private-->
