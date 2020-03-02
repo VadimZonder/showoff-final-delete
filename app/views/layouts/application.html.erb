@@ -82,7 +82,7 @@
 
                   //redirect to home page - window.location is used for cross browser safety
                   //also by refreshing it will update ruby varaible with the access token  
-                  window.location.href = "/";
+                  window.location.href = "/widgets";
 
               },
               error: function(err) {
@@ -93,8 +93,6 @@
               }
           });
       }
-
-
       //Registration
       //create user-------------------------------------------------------------------------------------------------------------------
       function register() {
@@ -314,7 +312,7 @@
           <li class="navbar-right" >
 
             <!-- Trigger/Open The Modal BEGIN----------------------------------------------------------- -->
-            <!-- Button to open the modal LOOGOUT  form -->
+            <!-- Button to open the modal LOGOUT  form -->
             <button id="btn-logout" class="btn-white btn btn-warning" onclick="logout()">Logout</button>
 
           </li>
@@ -325,15 +323,11 @@
       <ul class="nav navbar-nav navbar-right myFont">
         <li class="navbar-right">
 
-
           <!-- Trigger/Open The Modal BEGIN----------------------------------------------------------- -->
           <!-- Button to open the modal logout form -->
           <button id="btn-passwordReset" class="btn-white btn btn-danger" onclick="passwordReset()">Password Reset</button>
-
         </li>
       </ul>
-
-
 
       <ul class="nav navbar-nav navbar-right myFont">
         <li class="navbar-right">
@@ -378,8 +372,11 @@
               </div>
             </form>
           </div>
-
-
+      </ul>
+      </li>
+    </ul>
+  </div>
+</nav>
           <!-- Trigger/Open The Modal BEGIN----------------------------------------------------------- -->
           <!-- Button to open the modal logout button
             <button id="btn-logout" class="btn-white btn btn-warning" onclick="logout()">Logout</button>-->
@@ -431,11 +428,6 @@
               dispalyLoginOrOut();
           </script>
 
-      </ul>
-      </li>
-    </ul>
-  </div>
-</nav>
 <br>
 <br>
 <div class="jumbotron text-center">

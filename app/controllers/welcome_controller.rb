@@ -1,6 +1,6 @@
 class WelcomeController < ApplicationController
   protect_from_forgery prepend: true
- # GET /welcome
+
   def index
     ##Development or Deployment____________
     @url =  request.original_url
@@ -26,9 +26,7 @@ class WelcomeController < ApplicationController
    "client_id="+@client_id+
    "&client_secret="+@client_secret
     
-    
 
- 
 ###All Visible Widets______________________________________________________________________________
     @searchTerm = ""
 @urlSerachTermVisible ='https://showoff-rails-react-production.herokuapp.com/api/v1/users/1/widgets?
@@ -44,12 +42,8 @@ client_id='+@client_id+'&client_secret='+@client_secret
   }
 )
 
-
-
-
 #display auth message
-   ### @res = result
-   ### @jsonParse = JSON.parse @res
+
    @objectCounter =1
     @jsonParseAllWidgets = JSON.parse (@allWidgetsResponceSample) ##change to the actual json string
    # @nameResultsArray = @jsonParseAllWidgets["data"]["widgets"][0]["name"]
@@ -68,14 +62,8 @@ client_id='+@client_id+'&client_secret='+@client_secret
 
        @nameResultsArray =  @nameResultsArray.push(@jsonParseAllWidgets["data"]["widgets"][arrayCount-1]["user"]["name"])
        @nameResultsArray =  @nameResultsArray.push(@jsonParseAllWidgets["data"]["widgets"][arrayCount-1]["user"]["images"]["small_url"])
-=begin
-       @descriptionResulsArray = @descriptionResulsArray.push(@jsonParseAllWidgets["data"]["widgets"][arrayCount-1]["description"])
-       @fNameResulsArray =  @fNameResulsArray.push(@jsonParseAllWidgets["data"]["widgets"][arrayCount-1]["user"]["first_name"])
-       @lNameResulsArray =  @lNameResulsArray.push(@jsonParseAllWidgets["data"]["widgets"][arrayCount-1]["user"]["last_name"])
-=end
+
        arrayCount = arrayCount - 1
    end
-   
- 
   end
 end

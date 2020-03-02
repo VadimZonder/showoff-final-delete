@@ -2,6 +2,18 @@ $brand-primary: #532F8C;
 $brand-language: #B01302;
 $brand-print: #DC0032;
 
+#output{
+  color: black;
+  font-size:18px;
+  padding: 25px 25px 25px 25px;
+}
+
+.red{
+  color: $brand-language;
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 18px;
+}
+
 .jumbotron {
   background: $brand-primary;
   color: white;

@@ -1,22 +1,18 @@
 class WidgetsController < ApplicationController
   before_action :set_widget, only: [:show, :edit, :update, :destroy]
 
-  # GET /widgets
-  # GET /widgets.json
   def index
-    
      ##Development or Deployment____________
     @url =  request.original_url
-    if @url.include? 'c9users.io' 
+    if @url.include? 'localhost'
         @deployment = false
     else
         @deployment = true
-        
     end  
     require "open-uri"
     require 'rest-client'
     require 'json'
-    
+
     ###chnange whne recieve working credentials
     @client_id= "277ef29692f9a70d511415dc60592daf4cf2c6f6552d3e1b769924b2f2e2e6fe"
     @client_secret = "d6106f26e8ff5b749a606a1fba557f44eb3dca8f48596847770beb9b643ea352"
@@ -38,13 +34,10 @@ client_id='+@client_id+'&client_secret='+@client_secret
 )
   
 #display auth message
-   ### @res = result
-   ### @jsonParse = JSON.parse @res
    @objectCounter =1
-    @jsonParseAllWidgets = JSON.parse (@myWidgetsResponceSample) ##change to the actual json string
-   # @nameResultsArray = @jsonParseAllWidgets["data"]["widgets"][0]["name"]
+    ##change to the actual json string
+    @jsonParseAllWidgets = JSON.parse (@myWidgetsResponceSample)
    arrayCount = @jsonParseAllWidgets["data"]["widgets"].count-1
-  #@nameResultsArray = @jsonParseAllWidgets["data"]["widgets"][1]["name"]
   @nameResultsArray = []
   @descriptionResulsArray = []
   @fNameResulsArray = []
@@ -55,58 +48,9 @@ client_id='+@client_id+'&client_secret='+@client_secret
        @nameResultsArray = @nameResultsArray.push(@jsonParseAllWidgets["data"]["widgets"][arrayCount-1]["description"])
        @nameResultsArray =  @nameResultsArray.push(@jsonParseAllWidgets["data"]["widgets"][arrayCount-1]["kind"])
        @nameResultsArray =  @nameResultsArray.push(@jsonParseAllWidgets["data"]["widgets"][arrayCount-1]["user"]["images"]["small_url"])
-=begin         
-       @descriptionResulsArray = @descriptionResulsArray.push(@jsonParseAllWidgets["data"]["widgets"][arrayCount-1]["description"])
-       @fNameResulsArray =  @fNameResulsArray.push(@jsonParseAllWidgets["data"]["widgets"][arrayCount-1]["user"]["first_name"])
-       @lNameResulsArray =  @lNameResulsArray.push(@jsonParseAllWidgets["data"]["widgets"][arrayCount-1]["user"]["last_name"])
-=end       
+
        arrayCount = arrayCount - 1
    end
-  
-   
-
   end
 
-  # GET /widgets/1
-  # GET /widgets/1.json
-  def show
-  end
-
-  # GET /widgets/new
-  def new
-
-  end
-
-  # GET /widgets/1/edit
-  def edit
-  end
-
-  # POST /widgets
-  # POST /widgets.json
-  def create
-   
-  end
-
-  # PATCH/PUT /widgets/1
-  # PATCH/PUT /widgets/1.json
-  def update
-   
-  end
-
-  # DELETE /widgets/1
-  # DELETE /widgets/1.json
-  def destroy
-  
-  end
-
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_widget
-      
-    end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def widget_params
-      
-    end
 end

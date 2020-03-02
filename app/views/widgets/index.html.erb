@@ -1,8 +1,7 @@
-
 <p id="notice"><%= notice %></p>
 <!--My Widgets ALL BEGIN ----------------------------------------------------------------------------------------------------------------->
  <br><br>
-<h3>My Widgets</h3>
+<h3>Widgets Created by Me</h3>
 <table class="table table-hover">
   <thead>
     <tr>
@@ -14,6 +13,10 @@
     </tr>
   </thead>
   <tbody>
+  <% if @nameResultsArray.empty? %>
+    <%@noWidgetsCreatedMessage="You have not created any Widgets yet" %>
+    <p class="red"><%= @noWidgetsCreatedMessage %></p>
+  <% end %>
     <% @nameResultsArray.each_slice(5) do |id, widgetName, widgetDescription, kind, image| %>
     <%# @descriptionResulsArray.each do |widgetDescription| %>
     <%# @fNameResulsArray.each do |fName| %>
@@ -32,70 +35,64 @@
 <!--My Widgets ALL END ----------------------------------------------------------------------------------------------------------------->
 <br>
 
-
-
-
-<h3>New Widget</h3>
 <!--Create New WIDGETS ----------------------------------------------------------------------------------------------------------------->
-<script>
+<h3>Create a New Widget</h3>
+  <script>
+  //create Widgets JS---------------------------------------------------------------------------------------------
+  function createWidget() {
+    //initial values
+    var name = document.getElementById("name").value;
+    var description = document.getElementById("description").value;
+    var privateWidget = document.getElementById('privateWidget').checked;
+    var widgetPrivacy;
+    var privateWidgetUrl = "https://showoff-rails-react-production.herokuapp.com/api/v1/widgets";
 
-//create Widgets JS---------------------------------------------------------------------------------------------
-function createWidget() {
-  //initial values
-  var name = document.getElementById("name").value;
-  var description = document.getElementById("description").value;
-  var privateWidget = document.getElementById('privateWidget').checked;
-  var widgetPrivacy;
-  var privateWidgetUrl = "https://showoff-rails-react-production.herokuapp.com/api/v1/widgets";
+    //indicating if the widget creating is private or public
+     if(privateWidget === false){
+        widgetPrivacy = "visible";
+     }
+     else if (privateWidget === true){
+       widgetPrivacy = "hidden";
+     }
+     else{
+       console.log("Something went wrong with the widget's privacy checkbox. It's value is = "+widgetPrivacy);
+     }
 
-  //indicating if the widget creating is private or public
-   if(privateWidget === false){
-      widgetPrivacy = "visible";
-   }
-   else if (privateWidget === true){
-     widgetPrivacy = "hidden";
-   }
-   else{
-     console.log("Something went wrong with the widget's privacy checkbox. It's value is = "+widgetPrivacy);
-   }
+    //AJAX call
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: privateWidgetUrl ,
+        data: {
+          "widget": {
+            "name": name,
+            "description": description,
+            "kind": widgetPrivacy
+         }
+        },
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader("Authorization", authorization, "Content-Type","application/json")
+        }, success: function(data){
+              responceMessage = document.getElementById('output').innerHTML = "<span>Congratulations you've created a widget. "+
+              data.data.widget.name+"'s id is " +data.data.widget.id+"."+"</span>";
+              console.log(data);
+        },
+        error: function(err) {
+            responceMessage = document.getElementById('output').innerHTML = "<span>Failure to create a widget due to the following error - "+
+            err.responseJSON.message+"."+"</span>";
+            console.log("Error");
+            console.log(err.responseJSON.message);
+        }
 
-  //AJAX call
-  $.ajax({
-      type: "POST",
-      dataType: "json",
-      url: privateWidgetUrl ,
-      data: {
-        "widget": {
-          "name": name,
-          "description": description,
-          "kind": widgetPrivacy
-  	   }
-      },
-      beforeSend: function(xhr) {
-          xhr.setRequestHeader("Authorization", authorization, "Content-Type","application/json")
-      }, success: function(data){
-            responceMessage = document.getElementById('output').innerHTML = "<span style='color: lime; font-size:18px; padding: 25px 25px 25px 25px;'>Congratulations you've created a widget. "+
-            data.data.widget.name+"'s id is " +data.data.widget.id+"."+"</span>";
-            console.log(data);
-      },
-      error: function(err) {
-          responceMessage = document.getElementById('output').innerHTML = "<span style='color: red; font-size:18px; padding: 25px 25px 25px 25px;'>Failure to create a widget due to the following error - "+
-          err.responseJSON.message+"."+"</span>";
-          console.log("Error");
-          console.log(err.responseJSON.message);
-      }
+    });
 
-  });
+    setTimeout(function(){
+      //reloading in order to update
+      location.reload();
+    }, 5000);
 
-  setTimeout(function(){
-    //reloading in order to update
-    location.reload();
-  }, 5000);
-
-}
-
-</script>
-
+  }
+  </script>
 
 <!--Create Private Widget HTML---------------------------------------------------------->
 <form class="form" onsubmit="return false;">
@@ -115,106 +112,86 @@ function createWidget() {
   </div>
   <button type="submit" onclick="createWidget();" class="btn btn-primary">Create</button>
 </form>
-
-
-
 <br>
-
-</span>
 </div>
 
-<!-- OUTPUT PAnnel-->
-<div class = "panel panel-primary">
+<!-- OUTPUT Panel-->
+<div class = "panel panel-warning">
    <div class = "panel-heading">
       <h3 class = "panel-title" >Responce Message</h3>
    </div>
    <div style="padding: 10px 10px 10px 10px;">
-   <span id="output" style="white-space:nowrap;" ></span>
+    <span id="output" style="white-space:nowrap;" ></span>
    </div>
 </div>
-
 <br>
 
-
-<h3>Edit/Delete a Widget</h3>
 <!--Edit/Delete a Widget ----------------------------------------------------------------------------------------------------------------->
+<h3>Edit/Delete a Widget</h3>
+<h4>Do not check the Delete checkbox for widget's update</h4>
+  <script>
+    function createOrDeleteWidget() {
+      //initial values
+      var id = document.getElementById("id").value;
+      var nameUpdate = document.getElementById("nameUpdate").value;
+      var descriptionUpdate = document.getElementById("descriptionUpdate").value;
+      var deleteWidget = document.getElementById('deleteWidget').checked;
+      var action;
 
-<script>
-function createOrDeleteWidget() {
-  //initial values
-  var id = document.getElementById("id").value;
-  var nameUpdate = document.getElementById("nameUpdate").value;
-  var descriptionUpdate = document.getElementById("descriptionUpdate").value;
-  var deleteWidget = document.getElementById('deleteWidget').checked;
-  var action;
-  
-  
-  //indicating if the widget creatin is private or public
-   if(deleteWidget === false){
-      deleteWidgetString = "PUT";
-      action = "Update"
-   }
-   else if (deleteWidget === true){
-     deleteWidgetString = "DELETE";
-     action = "Delete"
-   }
-   else{
-     console.log("Something went wrong with the widget's delete/update checkbox. It's value is = "+id);
-   }
+      //indicating if the widget certain is private or public
+       if(deleteWidget === false){
+          deleteWidgetString = "PUT";
+          action = "Update"
+       }
+       else if (deleteWidget === true){
+         deleteWidgetString = "DELETE";
+         action = "Delete"
+       }
+       else{
+         console.log("Something went wrong with the widget's delete/update checkbox. It's value is = "+id);
+       }
+       var deleteOrEditWidgetUrl = "https://showoff-rails-react-production.herokuapp.com/api/v1/widgets/"+id;
 
-                                
-   var deleteOrEditWidgetUrl = "https://showoff-rails-react-production.herokuapp.com/api/v1/widgets/"+id;
+      //AJAX call
+      $.ajax({
+          type: deleteWidgetString,
+          dataType: "json",
+          url: deleteOrEditWidgetUrl,
+          dataPUT: {
+            "widget": {
+              "name": name,
+              "description": description
+             }
+           },
+           dataDELETE: {
+          },
+          data: (action === "PUT") ?  data: {"widget": {
+              "name": nameUpdate,
+              "description": descriptionUpdate
+             }
+          } ,
+          beforeSend: function(xhr) {
+              xhr.setRequestHeader("Authorization", authorization, "Content-Type","application/json")
+          }, success: function(data){
+                document.getElementById('output').innerHTML = "<span>Congratulations you're action to "
+                +action+" was "+data.message+"full."+"</span>";
+                console.log(data);
+          },
+          error: function(err) {
+              document.getElementById('output').innerHTML = "<span>Failure to modify- "+
+              err.responseJSON.message+"."+"</span>";
+              console.log("Error");
+              console.log(err.responseJSON.message);
+          }
+      });
+      setTimeout(function(){
+          //reloading in order to update
+          location.reload();
+      }, 5000);
+    }
+  </script>
 
-  //AJAX call
-  $.ajax({
-      type: deleteWidgetString,
-      dataType: "json",
-      url: deleteOrEditWidgetUrl,
-      dataPUT: {
-        "widget": {
-          "name": name,
-          "description": description
-  	     }
-  	   },
-  	   dataDELETE: {
-      },
-      data: (action === "PUT") ?  data: {"widget": {
-          "name": nameUpdate,
-          "description": descriptionUpdate
-  	     }
-      } , 
-      
-      /*
-      data: (action === "PUT") ?  data: { "widget": {
-          "name": name,
-          "description": description
-  	     }
-      },
-      */
-      
-      beforeSend: function(xhr) {
-          xhr.setRequestHeader("Authorization", authorization, "Content-Type","application/json")
-      }, success: function(data){
-            document.getElementById('output').innerHTML = "<span style='color: lime; font-size:18px; padding: 25px 25px 25px 25px;'>Congratulations you're action to "
-            +action+" was "+data.message+"full."+"</span>";
-            console.log(data);
-      },
-      error: function(err) {
-          document.getElementById('output').innerHTML = "<span style='color: red; font-size:18px; padding: 25px 25px 25px 25px;'>Failure to modify- "+
-          err.responseJSON.message+"."+"</span>"; 
-          console.log("Error");
-          console.log(err.responseJSON.message);
-      }
-  });
-  setTimeout(function(){
-      //reloading in order to update
-      location.reload();
-  }, 5000);   
-}
-</script>
-
-
-<!--Create Private Widget HTML-- onSubmit="if(!confirm('Is the form filled out correctly?')){return false;}" -------------------------------------------------------->
+<!--Create Private Widget HTML---------------------------------------------------------->
 <form class="form" onSubmit="if(!confirm('Is the form filled out correctly?')){return false;}">
   <div class="form-group">
     <label for="exampleInputId1">Widget ID</label>
@@ -222,11 +199,11 @@ function createOrDeleteWidget() {
   </div>    
   <div class="form-group">
     <label for="exampleInputEmail1">Widget Name</label>
-    <input type="text" class="form-control" id="nameUpdate" aria-describedby="nameHelp" placeholder="Enter Your Widget Name" required>
+    <input type="text" class="form-control" id="nameUpdate" aria-describedby="nameHelp" placeholder="Enter Your Widget Name">
   </div>
   <div class="form-group">
     <label for="exampleInputPassword1">Description</label>
-    <input type="text" class="form-control" id="descriptionUpdate" placeholder="Description" required>
+    <input type="text" class="form-control" id="descriptionUpdate" placeholder="Description">
     <small id="nameHelp" class="form-text text-muted">Make it short and sweet.</small>
   </div>
   <!--add option for both visible and private-->
@@ -237,8 +214,7 @@ function createOrDeleteWidget() {
   <button type="submit" onclick="createOrDeleteWidget();" class="btn btn-warning">Modify</button>
 </form>
 
-
-
+<br>
 <%= link_to 'Back', widgets_path %>
 
 
