@@ -47,7 +47,7 @@ group :development, :test do
 end
 
 group :development do
-  gem 'sqlite3', '~> 1.3.13'
+  #gem 'sqlite3', '~> 1.3.13'
   gem 'wdm', '~> 0.1.0'
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
   gem 'web-console', '>= 3.3.0'
