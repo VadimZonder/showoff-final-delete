@@ -30,7 +30,7 @@ gem 'jbuilder', '~> 2.5'
 
 gem 'rest-client'
 
-gem 'carrierwave', '~> 0.9'
+gem 'carrierwave', '~> 1.3'
 
 gem 'rack-cors', :require => 'rack/cors'
 
